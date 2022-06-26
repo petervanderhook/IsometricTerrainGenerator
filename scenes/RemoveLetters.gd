@@ -14,11 +14,5 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var new_text = ""
-	for character in text:
-		if character.is_valid_integer():
-			new_text += character
-		if len(new_text) >= 20:
-			break
-	text = new_text
+	text = str(floor(rand_range(0, 5000)))
 		

@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://tiles/ocean-tile/plane.png" type="Texture" id=1]
 [ext_resource path="res://tiles/forest-tile/plane.png" type="Texture" id=2]
-[ext_resource path="res://tiles/basic-tile/plane.png" type="Texture" id=3]
+[ext_resource path="res://tiles/mountain-tile/plane.png" type="Texture" id=3]
 [ext_resource path="res://tiles/water-tile/plane.png" type="Texture" id=4]
 [ext_resource path="res://tiles/grass-tile/plane.png" type="Texture" id=5]
 [ext_resource path="res://tiles/tall-grass-tile/plane.png" type="Texture" id=6]
 [ext_resource path="res://tiles/sand-tile/plane.png" type="Texture" id=7]
+[ext_resource path="res://tiles/rock-tile/plane.png" type="Texture" id=8]
 
 [node name="Plane" type="Node2D"]
 position = Vector2( 126, 115 )
@@ -31,10 +32,14 @@ texture = ExtResource( 5 )
 position = Vector2( 356, -49 )
 texture = ExtResource( 6 )
 
-[node name="Rock" type="Sprite" parent="."]
-position = Vector2( 485, -50 )
+[node name="Mountain" type="Sprite" parent="."]
+position = Vector2( 491, -45 )
 texture = ExtResource( 3 )
 
 [node name="Forest" type="Sprite" parent="."]
 position = Vector2( 621, -57 )
 texture = ExtResource( 2 )
+
+[node name="Rock" type="Sprite" parent="."]
+position = Vector2( 750, -54 )
+texture = ExtResource( 8 )

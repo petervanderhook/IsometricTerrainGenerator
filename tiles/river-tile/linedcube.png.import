@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/plane.png-3edf724f2f2e21556c5ad46630e5df42.stex"
+path="res://.import/linedcube.png-d7822b16268c4a9983ee2407a9316e82.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tiles/basic-tile/plane.png"
-dest_files=[ "res://.import/plane.png-3edf724f2f2e21556c5ad46630e5df42.stex" ]
+source_file="res://tiles/river-tile/linedcube.png"
+dest_files=[ "res://.import/linedcube.png-d7822b16268c4a9983ee2407a9316e82.stex" ]
 
 [params]
 

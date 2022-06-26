@@ -1,9 +1,4 @@
 extends TileMap
-
-export var x_bounds = [0, 32]
-export var y_bounds = [0,32]
-
-export var iteration_count =3 
 #### Chunks ####
 # size = 32x32
 # Load off perlin noise
@@ -91,14 +86,23 @@ var generated = false
 var iterating = false
 var tree_biome_tiles = []
 var river_biome_tiles = []
+var rock_biome_tiles = []
+var field_biome_tiles = []
 var global_seed = 1470
 
 onready var perlin_terrain = get_parent().find_node("PerlinTerrain")
 onready var perlin_trees = get_parent().find_node("PerlinTrees")
+onready var perlin_fields = get_parent().find_node("PerlinFields")
 onready var perlin_rivers = get_parent().find_node("PerlinRivers")
+onready var perlin_rocks = get_parent().find_node("PerlinRocks")
 
 # Export Vars for map generation
 export var min_distance_per_river = 30
+export var min_distance_per_rock = 12
+export var x_bounds = [0, 32]
+export var y_bounds = [0,32]
+export var world_size = 8
+export var iteration_count =3 
 
 onready var seed_input
 # Called when the node enters the scene tree for the first time.
@@ -150,9 +154,9 @@ func generate_chunk(dimensions):
 		return
 	if dimensions in rendered_chunks:
 		return
-	if dimensions[0] > 8:
+	if dimensions[0] > (world_size -1):
 		return
-	if dimensions[1] > 8:
+	if dimensions[1] > (world_size -1):
 		return
 	
 	var x_multiplier = dimensions[0]
@@ -169,7 +173,7 @@ func generate_chunk(dimensions):
 	while (len(init_coords) > 0):
 		var chosen_tile = init_coords.pop_at(floor(rng.randf_range(0, len(init_coords))))
 		var chosen_value = perlin_terrain.texture.noise.get_noise_2d(chosen_tile[0], chosen_tile[1])
-		print(chosen_tile, ' ', chosen_value)
+		#print(chosen_tile, ' ', chosen_value)
 		generate_tile(chosen_tile, chosen_value)
 	generated = true
 	time_to_iterate = time + 1
@@ -182,8 +186,9 @@ func generate_tile(coord_array, value):
 	var valid_tree_tile
 	var valid_mountain_tile
 	var valid_river_tile
-	var valid_ore_tile
+	var valid_rock_tile
 	var valid_fish_tile
+	var valid_field_tile
 	if value < -0.15:
 		tile_num = 1
 		if value < -0.3:
@@ -191,15 +196,19 @@ func generate_tile(coord_array, value):
 	else:
 		tile_num = 2
 		if value > -0.05:
+			valid_rock_tile = true
+			valid_field_tile = true
 			valid_tree_tile = true
 			tile_num = 3
 			if value > 0.1:
-				tile_num = 4
+				#tile_num = 4
 				#tile_num = 3
 				if value > .6:
+					valid_rock_tile = false
+					valid_field_tile = false
 					valid_tree_tile = false
 					valid_river_tile = true
-					tile_num = 5
+					tile_num = 7
 				elif value > .35:
 					valid_river_tile = true
 	
@@ -207,16 +216,22 @@ func generate_tile(coord_array, value):
 		tree_biome_tiles.append(coord_array)
 	if valid_river_tile:
 		river_biome_tiles.append(coord_array)
+	if valid_rock_tile:
+		rock_biome_tiles.append(coord_array)
+	if valid_field_tile:
+		field_biome_tiles.append(coord_array)
 	set_cell(coord_array[0], coord_array[1], tile_num)
 
 func get_global_seed():
+	print("Seed obtained: ", seed_input.text)
 	return int(seed_input.text)
 
-func set_global_seed():
-	perlin_rivers.texture.noise.seed = global_seed
-	perlin_terrain.texture.noise.seed = global_seed
-	perlin_trees.texture.noise.seed = global_seed
-	
+func set_global_seed(seed_fetched):
+	perlin_rivers.texture.noise.set_seed(seed_fetched)
+	perlin_terrain.texture.noise.set_seed(seed_fetched)
+	perlin_trees.texture.noise.set_seed(seed_fetched)
+	perlin_fields.texture.noise.set_seed(seed_fetched - 1000)
+	print("River seed: ", perlin_rivers.texture.noise.seed, "\nTerrain Seed: ", perlin_terrain.texture.noise.seed, "\nTrees Seed: ", perlin_trees.texture.noise.seed, "\nFields Seed: ", perlin_fields.texture.noise.seed)
 
 func get_tile_types(tile_list):
 	var type_list = []
@@ -246,37 +261,53 @@ func delete_world():
 		set_cell(cell[0], cell[1], -1)
 
 func init_world():
-	get_global_seed()
-	set_global_seed()
+	
+	set_global_seed(get_global_seed())
 	# Reset biome arrays
 	tree_biome_tiles = []
 	river_biome_tiles = []
+	rock_biome_tiles = []
+	field_biome_tiles = []
+	# Unrender all tiles on the world
 	delete_world()
+	
+	# Reset generation vars
 	iterated_cells = []
 	rendered_chunks = []
+	
+	# Set bools for _process
 	iterating = false
 	generated = false
 	
-	if len(seed_input.text) > 20:
-		rng.seed = int(seed_input.text.substr(0, 19))
-	else:
-		rng.seed = int(seed_input.text)
 	var gen_list = []
-	for b in range(0, 7):
-		for c in range(0, 7):
+	for b in range(0, world_size):
+		for c in range(0, world_size):
 			gen_list.append([b, c])
 	
 	for genchunk in gen_list:
+		#print("Generating terrain chunk: ", genchunk)
 		generate_chunk(genchunk)
 	
+	print("Generating Trees")
 	iterate_trees()
+	print("Generating Fields")
+	iterate_fields()
+	print("Generating Rocks")
+	iterate_rocks()
+	print("Generating Rivers")
 	iterate_rivers()
+	#print("Finished")
 	
 	
 func iterate_trees():
 	for tile in tree_biome_tiles:
 		if perlin_trees.texture.noise.get_noise_2d(tile[0], tile[1]) > 0.25:
 			set_cell(tile[0], tile[1], 6)
+
+func iterate_fields():
+	for tile in field_biome_tiles:
+		if perlin_fields.texture.noise.get_noise_2d(tile[0], tile[1]) < -0.45:
+			set_cell(tile[0], tile[1], 4)
 
 func iterate_rivers():
 	var created_river_tiles = []
@@ -301,6 +332,28 @@ func iterate_rivers():
 		set_cell(river[0], river[1], 0)
 		perlin_worm_river(river)
 
+func iterate_rocks():
+	var created_rock_tiles = []
+	for tile in rock_biome_tiles:
+		var noise_value = perlin_rocks.texture.noise.get_noise_2d(tile[0], tile[1])
+		if noise_value > 0.4:
+			created_rock_tiles.append(tile)
+			
+	var invalid_rocks = []
+	var valid_rocks = []
+	
+	print("Checking for invalids")
+	for tile in created_rock_tiles:
+		if tile in invalid_rocks:
+			continue
+		valid_rocks.append(tile)
+		for other_tile in created_rock_tiles:
+			if (other_tile[0] < (tile[0] + min_distance_per_rock)) and (other_tile[0] > (tile[0] - min_distance_per_rock)):
+				if (other_tile[1] < (tile[1] + min_distance_per_rock)) and (other_tile[1] > (tile[1] - min_distance_per_rock)):
+					invalid_rocks.append(other_tile)
+	print("Setting Rocks")
+	for rock_tile in valid_rocks:
+		set_cell(rock_tile[0], rock_tile[1], 5)
 
 func perlin_worm_river(start_coords):
 	var current_position = [] + start_coords
@@ -314,24 +367,22 @@ func perlin_worm_river(start_coords):
 		var previous_highest_value = 1
 		for tile in adj_tiles:
 			var noise_value = perlin_terrain.texture.noise.get_noise_2d(tile[0], tile[1])
-			print("Tile: ", tile, "    Value: ", noise_value)
-			
-			if noise_value <= -0.3:
+			#print("Tile: ", tile, "    Value: ", noise_value)
+			if noise_value <= -0.17:
 				return
 			elif get_cell(tile[0], tile[1]) == -1:
 				return
 			if noise_value < previous_highest_value:
 				if (previous_tile != adj_tiles[count]) and not adj_tiles[count] in past_tiles :
-					print("Duplicate Tile!\n\n\n\n\n")
 					previous_highest_value = noise_value
-					print("Tile is the new low. Setting index value to ", highest_value_index)
+					#print("Tile  [", count, "]: ", tile, " is the new low. Setting index value to ", highest_value_index)
 					highest_value_index = count
 			count += 1
 		
-		print("Changing positiong from ", current_position, " to ", adj_tiles[highest_value_index])
+		#print("Changing positiong from ", current_position, " to ", adj_tiles[highest_value_index])
 		previous_tile = current_position
 		current_position = adj_tiles[highest_value_index]
-		print("Setting ", current_position, " to water.")
+		#print("Setting ", current_position, " to water.")
 		# Find out if went on x axis or y axis and adjust width appropriately
 		set_cell(current_position[0], current_position[1], 0)
 		past_tiles.append(current_position)

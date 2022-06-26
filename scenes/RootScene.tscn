@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://tiles/resources/world-tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/TileMapManager.gd" type="Script" id=2]
 [ext_resource path="res://scripts/CameraScrollManual.gd" type="Script" id=3]
 [ext_resource path="res://models/crosshair/crosshair.png" type="Texture" id=4]
 [ext_resource path="res://scenes/RemoveLetters.gd" type="Script" id=5]
+[ext_resource path="res://models/player/Player.tscn" type="PackedScene" id=6]
 
 [sub_resource type="OpenSimplexNoise" id=1]
 seed = 1470
@@ -17,10 +18,18 @@ lacunarity = 4.0
 bump_strength = 0.0
 noise = SubResource( 1 )
 
+[sub_resource type="OpenSimplexNoise" id=9]
+seed = 1
+period = 8.2
+persistence = 0.0
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=10]
+noise = SubResource( 9 )
+
 [sub_resource type="OpenSimplexNoise" id=3]
-seed = 14
 period = 15.0
-persistence = 0.401
+persistence = 0.781
 lacunarity = 2.16
 
 [sub_resource type="NoiseTexture" id=4]
@@ -35,6 +44,15 @@ lacunarity = 0.28
 [sub_resource type="NoiseTexture" id=6]
 noise = SubResource( 5 )
 
+[sub_resource type="OpenSimplexNoise" id=7]
+octaves = 4
+period = 9.2
+persistence = 0.879
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=8]
+noise = SubResource( 7 )
+
 [node name="Node2D" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -43,7 +61,6 @@ tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 64 )
 cell_tile_origin = 2
 format = 1
-tile_data = PoolIntArray( -262144, 3, 0 )
 script = ExtResource( 2 )
 
 [node name="Camera Follow" type="Position2D" parent="."]
@@ -58,6 +75,7 @@ current = true
 script = ExtResource( 3 )
 
 [node name="Interface" type="Control" parent="Camera2D"]
+visible = false
 margin_left = -513.0
 margin_top = -302.0
 margin_right = -359.0
@@ -69,19 +87,35 @@ margin_bottom = 24.0
 text = "12141249124"
 script = ExtResource( 5 )
 
-[node name="PerlinTerrain" type="Sprite" parent="."]
+[node name="Node2D" parent="." instance=ExtResource( 6 )]
+position = Vector2( 51, 64 )
+
+[node name="PerlinNoise" type="Node" parent="."]
+
+[node name="PerlinTerrain" type="Sprite" parent="PerlinNoise"]
 visible = false
 position = Vector2( 510.75, 298.75 )
 scale = Vector2( 1.99316, 1.16504 )
 texture = SubResource( 2 )
 
-[node name="PerlinTrees" type="Sprite" parent="."]
+[node name="PerlinFields" type="Sprite" parent="PerlinNoise"]
 visible = false
-position = Vector2( 510.75, 298.75 )
-scale = Vector2( 1.99316, 1.16504 )
+position = Vector2( 776, 242 )
+texture = SubResource( 10 )
+
+[node name="PerlinTrees" type="Sprite" parent="PerlinNoise"]
+visible = false
+position = Vector2( 255, 256 )
 texture = SubResource( 4 )
 
-[node name="PerlinRivers" type="Sprite" parent="."]
+[node name="PerlinRivers" type="Sprite" parent="PerlinNoise"]
 visible = false
-position = Vector2( 257, 256 )
+position = Vector2( 454, 390 )
+scale = Vector2( 1.76953, 1.52344 )
 texture = SubResource( 6 )
+
+[node name="PerlinRocks" type="Sprite" parent="PerlinNoise"]
+visible = false
+position = Vector2( 454.5, 392.5 )
+scale = Vector2( 1.77148, 1.51367 )
+texture = SubResource( 8 )

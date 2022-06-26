@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=2]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+seed = 1470
+octaves = 5
+period = 50.0
+persistence = 0.131
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=2]
+bump_strength = 0.0
+noise = SubResource( 1 )
+
+[sub_resource type="OpenSimplexNoise" id=9]
+seed = 1
+period = 8.2
+persistence = 0.0
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=10]
+noise = SubResource( 9 )
+
+[sub_resource type="OpenSimplexNoise" id=3]
+period = 15.0
+persistence = 0.781
+lacunarity = 2.16
+
+[sub_resource type="NoiseTexture" id=4]
+noise = SubResource( 3 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+octaves = 6
+period = 0.1
+persistence = 0.617
+lacunarity = 0.28
+
+[sub_resource type="NoiseTexture" id=6]
+noise = SubResource( 5 )
+
+[sub_resource type="OpenSimplexNoise" id=7]
+octaves = 4
+period = 9.2
+persistence = 0.879
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=8]
+noise = SubResource( 7 )
+
+[node name="PerlinNoise" type="Node"]
+
+[node name="PerlinTerrain" type="Sprite" parent="."]
+visible = false
+position = Vector2( 510.75, 298.75 )
+scale = Vector2( 1.99316, 1.16504 )
+texture = SubResource( 2 )
+
+[node name="PerlinFields" type="Sprite" parent="."]
+visible = false
+position = Vector2( 776, 242 )
+texture = SubResource( 10 )
+
+[node name="PerlinTrees" type="Sprite" parent="."]
+visible = false
+position = Vector2( 255, 256 )
+texture = SubResource( 4 )
+
+[node name="PerlinRivers" type="Sprite" parent="."]
+visible = false
+position = Vector2( 454, 390 )
+scale = Vector2( 1.76953, 1.52344 )
+texture = SubResource( 6 )
+
+[node name="PerlinRocks" type="Sprite" parent="."]
+visible = false
+position = Vector2( 454.5, 392.5 )
+scale = Vector2( 1.77148, 1.51367 )
+texture = SubResource( 8 )
