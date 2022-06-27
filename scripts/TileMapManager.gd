@@ -189,13 +189,13 @@ func generate_tile(coord_array, value):
 	var valid_rock_tile
 	var valid_fish_tile
 	var valid_field_tile
-	if value < -0.15:
+	if value < -0.55:
 		tile_num = 1
-		if value < -0.3:
+		if value < -0.6:
 			tile_num = 0
 	else:
 		tile_num = 2
-		if value > -0.05:
+		if value > -0.5:
 			valid_rock_tile = true
 			valid_field_tile = true
 			valid_tree_tile = true
