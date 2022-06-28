@@ -1,11 +1,13 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://tiles/resources/world-tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/TileMapManager.gd" type="Script" id=2]
 [ext_resource path="res://scripts/CameraScrollManual.gd" type="Script" id=3]
 [ext_resource path="res://models/crosshair/crosshair.png" type="Texture" id=4]
 [ext_resource path="res://scenes/RemoveLetters.gd" type="Script" id=5]
-[ext_resource path="res://models/player/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://models/citizen/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/InGameManager.gd" type="Script" id=7]
+[ext_resource path="res://scripts/DrawSelectionBox.gd" type="Script" id=8]
 
 [sub_resource type="OpenSimplexNoise" id=1]
 seed = 1470
@@ -53,9 +55,35 @@ lacunarity = 4.0
 [sub_resource type="NoiseTexture" id=8]
 noise = SubResource( 7 )
 
-[node name="Node2D" type="Node2D"]
+[node name="Root" type="Node2D"]
+script = ExtResource( 7 )
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Units" type="YSort" parent="."]
+
+[node name="Unit" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 77, -232 )
+collision_layer = 1
+
+[node name="Unit2" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 173, -197 )
+collision_layer = 1
+
+[node name="Unit3" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 90, -164 )
+collision_layer = 1
+
+[node name="Unit4" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 50, -156 )
+collision_layer = 1
+
+[node name="Unit5" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 161, -102 )
+collision_layer = 1
+
+[node name="ActiveGame" type="Node2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="ActiveGame"]
+position = Vector2( -16, -26 )
 mode = 1
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 64 )
@@ -63,59 +91,60 @@ cell_tile_origin = 1
 format = 1
 script = ExtResource( 2 )
 
-[node name="Camera Follow" type="Position2D" parent="."]
+[node name="Camera Follow" type="Position2D" parent="ActiveGame"]
+visible = false
 
-[node name="Sprite" type="Sprite" parent="Camera Follow"]
+[node name="Sprite" type="Sprite" parent="ActiveGame/Camera Follow"]
 scale = Vector2( 7.1, 7.1 )
 texture = ExtResource( 4 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="ActiveGame"]
 rotating = true
 current = true
 script = ExtResource( 3 )
 
-[node name="Interface" type="Control" parent="Camera2D"]
+[node name="Interface" type="Control" parent="ActiveGame/Camera2D"]
 visible = false
 margin_left = -513.0
 margin_top = -302.0
 margin_right = -359.0
 margin_bottom = -278.0
 
-[node name="textinput" type="TextEdit" parent="Camera2D/Interface"]
+[node name="textinput" type="TextEdit" parent="ActiveGame/Camera2D/Interface"]
 margin_right = 189.0
 margin_bottom = 24.0
 text = "12141249124"
 script = ExtResource( 5 )
 
-[node name="Node2D" parent="." instance=ExtResource( 6 )]
-position = Vector2( 51, 64 )
+[node name="PerlinNoise" type="Node" parent="ActiveGame"]
 
-[node name="PerlinNoise" type="Node" parent="."]
-
-[node name="PerlinTerrain" type="Sprite" parent="PerlinNoise"]
+[node name="PerlinTerrain" type="Sprite" parent="ActiveGame/PerlinNoise"]
 visible = false
 position = Vector2( 510.75, 298.75 )
 scale = Vector2( 1.99316, 1.16504 )
 texture = SubResource( 2 )
 
-[node name="PerlinFields" type="Sprite" parent="PerlinNoise"]
+[node name="PerlinFields" type="Sprite" parent="ActiveGame/PerlinNoise"]
 visible = false
 position = Vector2( 776, 242 )
 texture = SubResource( 10 )
 
-[node name="PerlinTrees" type="Sprite" parent="PerlinNoise"]
+[node name="PerlinTrees" type="Sprite" parent="ActiveGame/PerlinNoise"]
 visible = false
 position = Vector2( 255, 256 )
 texture = SubResource( 4 )
 
-[node name="PerlinRivers" type="Sprite" parent="PerlinNoise"]
+[node name="PerlinRivers" type="Sprite" parent="ActiveGame/PerlinNoise"]
 visible = false
 position = Vector2( 454, 390 )
 scale = Vector2( 1.76953, 1.52344 )
 texture = SubResource( 6 )
 
-[node name="PerlinRocks" type="Sprite" parent="PerlinNoise"]
+[node name="PerlinRocks" type="Sprite" parent="ActiveGame/PerlinNoise"]
 visible = false
 position = Vector2( 454.5, 392.5 )
 scale = Vector2( 1.77148, 1.51367 )
 texture = SubResource( 8 )
+
+[node name="SelectNode" type="Node2D" parent="."]
+script = ExtResource( 8 )

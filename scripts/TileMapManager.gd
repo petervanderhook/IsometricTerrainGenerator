@@ -111,7 +111,7 @@ func _ready():
 	time = 0
 	time_to_wait = 0.0
 	rng.randomize()
-	seed_input = get_parent().find_node("textinput")
+	seed_input =get_parent().find_node("textinput")
 	seed_input.text = str(global_seed)
 	init_world()
 	
@@ -189,13 +189,13 @@ func generate_tile(coord_array, value):
 	var valid_rock_tile
 	var valid_fish_tile
 	var valid_field_tile
-	if value < -0.55:
+	if value < -0.15:
 		tile_num = 1
-		if value < -0.6:
+		if value < -0.3:
 			tile_num = 0
 	else:
 		tile_num = 2
-		if value > -0.5:
+		if value > -0.05:
 			valid_rock_tile = true
 			valid_field_tile = true
 			valid_tree_tile = true
