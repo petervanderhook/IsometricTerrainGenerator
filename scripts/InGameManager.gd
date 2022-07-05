@@ -8,6 +8,7 @@ const terrain_ids = [1358, 1374]
 
 onready var select_draw = find_node("SelectNode")
 
+onready var active_units = $ActiveUnits
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -27,7 +28,7 @@ func _unhandled_input(event):
 		# Just clicked the button, potentially start dragging.
 		if event.pressed:
 			for unit in selected:
-				if not unit.collider in $Units.get_children():
+				if not unit.collider in active_units.get_children():
 					continue
 				unit.collider.unselect()
 			selected = []
@@ -42,15 +43,14 @@ func _unhandled_input(event):
 			var space_query = Physics2DShapeQueryParameters.new()
 			space_query.set_shape(select_rect)
 			space_query.transform = Transform2D(0, (drag_end + drag_start)/2)
-			print("S: ", drag_start, " E:", drag_end)
-			print((select_rect.get_extents()[0]*2), " ", (select_rect.get_extents()[1]*2))
-			selected = space.intersect_shape(space_query)
+			
+			# Start Pos, End Pos
+			#print("S: ", drag_start, " E:", drag_end)
+			selected = space.intersect_shape(space_query, 1024)
 			var updated_selected = []
-			print ($Units.get_children())
 			for unit in selected:
-				if not unit.collider in $Units.get_children():
+				if not unit.collider in active_units.get_children():
 					continue
-				print(unit.collider_id, unit)
 				if unit.collider.IS_UNIT:
 					unit.collider.select()
 				updated_selected.append(unit)

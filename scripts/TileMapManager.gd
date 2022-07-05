@@ -100,7 +100,7 @@ onready var perlin_rocks = get_parent().find_node("PerlinRocks")
 export var min_distance_per_river = 30
 export var min_distance_per_rock = 12
 export var x_bounds = [0, 32]
-export var y_bounds = [0,32]
+export var y_bounds = [0, 32]
 export var world_size = 8
 export var iteration_count =3 
 
@@ -111,7 +111,7 @@ func _ready():
 	time = 0
 	time_to_wait = 0.0
 	rng.randomize()
-	seed_input =get_parent().find_node("textinput")
+	seed_input = find_parent("Root").find_node("textinput")
 	seed_input.text = str(global_seed)
 	init_world()
 	

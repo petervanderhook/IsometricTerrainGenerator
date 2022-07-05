@@ -1,0 +1,54 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://models/citizen/New folder/7.png" type="Texture" id=1]
+[ext_resource path="res://models/citizen/New folder/1.png" type="Texture" id=2]
+[ext_resource path="res://models/citizen/New folder/8.png" type="Texture" id=3]
+[ext_resource path="res://models/citizen/New folder/3.png" type="Texture" id=4]
+[ext_resource path="res://models/citizen/New folder/9.png" type="Texture" id=5]
+[ext_resource path="res://models/citizen/New folder/4.png" type="Texture" id=6]
+[ext_resource path="res://models/citizen/New folder/2.png" type="Texture" id=7]
+[ext_resource path="res://models/citizen/New folder/6.png" type="Texture" id=8]
+[ext_resource path="res://models/citizen/New folder/5.png" type="Texture" id=9]
+[ext_resource path="res://models/citizen/New folder/11.png" type="Texture" id=10]
+[ext_resource path="res://models/citizen/New folder/10.png" type="Texture" id=11]
+[ext_resource path="res://models/citizen/New folder/14.png" type="Texture" id=12]
+[ext_resource path="res://models/citizen/New folder/12.png" type="Texture" id=13]
+[ext_resource path="res://models/citizen/New folder/15.png" type="Texture" id=14]
+[ext_resource path="res://models/citizen/New folder/13.png" type="Texture" id=15]
+[ext_resource path="res://models/citizen/BasicUnit.gd" type="Script" id=16]
+
+[sub_resource type="CircleShape2D" id=4]
+
+[sub_resource type="SphereMesh" id=3]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 8 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 11 ), ExtResource( 10 ), ExtResource( 13 ), ExtResource( 15 ), ExtResource( 12 ), ExtResource( 14 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "default",
+"speed": 12.0
+} ]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 16 )
+
+[node name="Unit" type="KinematicBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Unit"]
+position = Vector2( 0, -4 )
+shape = SubResource( 4 )
+
+[node name="UserSelected" type="MeshInstance2D" parent="Unit"]
+modulate = Color( 0.192157, 0.223529, 1, 1 )
+position = Vector2( 0, -4 )
+scale = Vector2( 11.0122, 10.5054 )
+mesh = SubResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Unit"]
+position = Vector2( 0, -21 )
+frames = SubResource( 2 )
+frame = 2
+playing = true
+
+[node name="Head" type="Node2D" parent="."]
