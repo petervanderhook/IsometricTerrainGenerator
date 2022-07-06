@@ -48,7 +48,7 @@ mesh = SubResource( 3 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D"]
 position = Vector2( 0, -21 )
 frames = SubResource( 2 )
-frame = 10
+frame = 2
 playing = true
 
 [node name="Head" type="Node2D" parent="."]

@@ -61,13 +61,13 @@ script = ExtResource( 7 )
 [node name="ActiveGame" type="Navigation2D" parent="."]
 
 [node name="TileMap" type="TileMap" parent="ActiveGame"]
-position = Vector2( -16, -26 )
 mode = 1
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 64 )
-cell_tile_origin = 1
+cell_y_sort = true
 show_collision = true
 format = 1
+tile_data = PoolIntArray( -589834, 1, 0, -589833, 1, 0, -589832, 1, 0, -589831, 1, 0, -589830, 1, 0, -524298, 1, 0, -524297, 1, 0, -524296, 1, 0, -524295, 1, 0, -524294, 1, 0, -458762, 1, 0, -458761, 1, 0, -458760, 1, 0, -458759, 1, 0, -458758, 1, 0, -393226, 1, 0, -393225, 1, 0, -393224, 1, 0, -393223, 1, 0, -393222, 1, 0, -327690, 1, 0, -327689, 1, 0, -327688, 1, 0, -327687, 1, 0, -327686, 1, 0 )
 script = ExtResource( 2 )
 
 [node name="PerlinNoise" type="Node" parent="ActiveGame"]
@@ -103,16 +103,16 @@ texture = SubResource( 8 )
 [node name="ActiveUnits" type="YSort" parent="."]
 
 [node name="Unit" parent="ActiveUnits" instance=ExtResource( 6 )]
-position = Vector2( 72, 40 )
+position = Vector2( 146, 142 )
 
 [node name="Unit2" parent="ActiveUnits" instance=ExtResource( 6 )]
-position = Vector2( 118, 93 )
+position = Vector2( 58, 142 )
 
 [node name="Unit3" parent="ActiveUnits" instance=ExtResource( 6 )]
-position = Vector2( 147, -22 )
+position = Vector2( 207, 76 )
 
 [node name="Unit4" parent="ActiveUnits" instance=ExtResource( 6 )]
-position = Vector2( 83, -30 )
+position = Vector2( 47, 37 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 rotating = true

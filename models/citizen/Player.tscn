@@ -30,7 +30,7 @@ animations = [ {
 } ]
 
 [node name="Unit" type="KinematicBody2D"]
-collision_layer = 3
+collision_layer = 6
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -46,5 +46,56 @@ mesh = SubResource( 3 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -21 )
 frames = SubResource( 2 )
-frame = 8
+frame = 1
 playing = true
+
+[node name="Rays" type="Node2D" parent="."]
+
+[node name="Front" type="RayCast2D" parent="Rays"]
+enabled = true
+cast_to = Vector2( 45, 0 )
+collision_mask = 5
+
+[node name="Position2D" type="Position2D" parent="Rays/Front"]
+position = Vector2( 53, 0 )
+rotation = 1.5708
+
+[node name="Left30" type="RayCast2D" parent="Rays"]
+rotation = -0.523598
+enabled = true
+cast_to = Vector2( 45, 0 )
+collision_mask = 5
+
+[node name="Position2D" type="Position2D" parent="Rays/Left30"]
+position = Vector2( 52.3372, 1.34933 )
+rotation = 1.5708
+
+[node name="Right30" type="RayCast2D" parent="Rays"]
+rotation = 0.523598
+enabled = true
+cast_to = Vector2( 45, 0 )
+collision_mask = 5
+
+[node name="Position2D" type="Position2D" parent="Rays/Right30"]
+position = Vector2( 53.3372, 0.382719 )
+rotation = 1.5708
+
+[node name="Right60" type="RayCast2D" parent="Rays"]
+rotation = 1.0472
+enabled = true
+cast_to = Vector2( 45, 0 )
+collision_mask = 5
+
+[node name="Position2D" type="Position2D" parent="Rays/Right60"]
+position = Vector2( 52.8372, 0.483425 )
+rotation = 1.5708
+
+[node name="Left60" type="RayCast2D" parent="Rays"]
+rotation = -1.0472
+enabled = true
+cast_to = Vector2( 45, 0 )
+collision_mask = 5
+
+[node name="Position2D" type="Position2D" parent="Rays/Left60"]
+position = Vector2( 52.4711, 0.882607 )
+rotation = 1.5708
