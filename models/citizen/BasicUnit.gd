@@ -39,7 +39,7 @@ func _process(delta):
 		set_collision_layer_bit(2, false)
 	if selected:	
 		print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
-	if Input.is_action_just_pressed("left_click") and selected:
+	if Input.is_action_just_pressed("right_click") and selected:
 		#print("Clicked")
 		var mouse_pos = get_global_mouse_position()
 		var current_pos = global_position

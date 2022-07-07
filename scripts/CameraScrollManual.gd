@@ -16,6 +16,9 @@ var lerp_speed = 3.9
 var wait_on_generate = 0.0
 var time = 0.0
 
+var is_panning = false
+var pan_start = Vector2(0,0)
+var pan_reference = Vector2(0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -41,30 +44,38 @@ func _process(delta):
 	transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
 	#set_lin_velocity_on_just_press()
 	if Input.is_action_just_pressed("shift"):
-		speed *= 10
+		speed_modifier = 10
 	elif Input.is_action_just_released("shift"):
-		speed /= 10
+		speed_modifier = 1
+	
+	if Input.is_action_just_pressed("right_click"):
+		pan_start = get_viewport().get_mouse_position()
+		pan_reference = transform.origin
+		is_panning = true
+	
+	if Input.is_action_just_released("right_click"):
+		is_panning = false
 	
 	if Input.is_action_pressed('left'):
-		follow_point.transform.origin.x -= speed
+		follow_point.transform.origin.x -= speed * speed_modifier
 		transform.origin.x = lerp(transform.origin.x, follow_point.transform.origin.x, delta * lerp_speed)
 	if Input.is_action_pressed('right'):
-		follow_point.transform.origin.x += speed
+		follow_point.transform.origin.x += speed * speed_modifier
 		transform.origin.x = lerp(transform.origin.x, follow_point.transform.origin.x, delta * lerp_speed)
 	if Input.is_action_pressed('up'):
-		follow_point.transform.origin.y -= speed
+		follow_point.transform.origin.y -= speed * speed_modifier
 		transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
 	if Input.is_action_pressed('down'):
-		follow_point.transform.origin.y += speed
+		follow_point.transform.origin.y += speed * speed_modifier
 		transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
-	if Input.is_action_just_released('wheel_down'):
-		if zoom.x < 10:
-			zoom.x += zoom_amount
-			zoom.y += zoom_amount
-	if Input.is_action_just_released('wheel_up'):
-		if zoom.y > 1:
-			zoom.x -= zoom_amount
-			zoom.y -= zoom_amount
+	#if Input.is_action_just_released('wheel_down'):
+		#if zoom.x < 10:
+		#	zoom.x += zoom_amount
+		#	zoom.y += zoom_amount
+	#if Input.is_action_just_released('wheel_up'):
+		#if zoom.y > 1:
+		#	zoom.x -= zoom_amount
+		#	zoom.y -= zoom_amount
 	
 	if zoom.x > 10:
 		speed = 20
@@ -75,6 +86,13 @@ func _process(delta):
 	else:
 		speed = 6
 		zoom_amount = 0.25
+	
+	
+	if is_panning:
+		var mouse_pos = get_viewport().get_mouse_position()
+		print("panning: ", pan_start - mouse_pos)
+		follow_point.transform.origin = pan_reference + (pan_start - mouse_pos)
+	
 func set_lin_velocity_on_just_press():
 	if Input.is_action_just_pressed("down"):
 		follow_point.transform.origin = transform.origin
