@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://tiles/resources/world-tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/TileMapManager.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://models/citizen/Player.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/InGameManager.gd" type="Script" id=7]
 [ext_resource path="res://scripts/DrawSelectionBox.gd" type="Script" id=8]
+[ext_resource path="res://scripts/Top.gd" type="Script" id=9]
 
 [sub_resource type="OpenSimplexNoise" id=1]
 seed = 1470
@@ -120,13 +121,11 @@ current = true
 script = ExtResource( 3 )
 
 [node name="Interface" type="Control" parent="Camera2D"]
-visible = false
-margin_left = -513.0
-margin_top = -302.0
-margin_right = -359.0
-margin_bottom = -278.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="textinput" type="TextEdit" parent="Camera2D/Interface"]
+visible = false
 margin_right = 189.0
 margin_bottom = 24.0
 text = "12141249124"
@@ -138,6 +137,145 @@ visible = false
 [node name="Sprite" type="Sprite" parent="Camera2D/Camera Follow"]
 scale = Vector2( 7.1, 7.1 )
 texture = ExtResource( 4 )
+
+[node name="ui" type="Control" parent="Camera2D"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Top" type="PanelContainer" parent="Camera2D/ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -512.0
+margin_top = -296.0
+margin_right = 512.0
+margin_bottom = -256.0
+script = ExtResource( 9 )
+
+[node name="Panel" type="Panel" parent="Camera2D/ui/Top"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 33.0
+
+[node name="Food" type="Control" parent="Camera2D/ui/Top/Panel"]
+anchor_right = 0.1
+anchor_bottom = 1.0
+margin_right = 15.0
+
+[node name="Label" type="Label" parent="Camera2D/ui/Top/Panel/Food"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+text = "Food:"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="Camera2D/ui/Top/Panel/Food"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 5.0
+text = "0"
+editable = false
+
+[node name="Water" type="Control" parent="Camera2D/ui/Top/Panel"]
+anchor_left = 0.15
+anchor_right = 0.25
+anchor_bottom = 1.0
+margin_right = 15.0
+
+[node name="Label" type="Label" parent="Camera2D/ui/Top/Panel/Water"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+text = "Water:"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="Camera2D/ui/Top/Panel/Water"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+editable = false
+
+[node name="Stone" type="Control" parent="Camera2D/ui/Top/Panel"]
+anchor_left = 0.3
+anchor_right = 0.4
+anchor_bottom = 1.0
+margin_right = 15.0
+
+[node name="Label" type="Label" parent="Camera2D/ui/Top/Panel/Stone"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+text = "Stone:"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="Camera2D/ui/Top/Panel/Stone"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+editable = false
+
+[node name="Wood" type="Control" parent="Camera2D/ui/Top/Panel"]
+anchor_left = 0.45
+anchor_right = 0.55
+anchor_bottom = 1.0
+margin_right = 15.0
+
+[node name="Label" type="Label" parent="Camera2D/ui/Top/Panel/Wood"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+text = "Wood:"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="Camera2D/ui/Top/Panel/Wood"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+editable = false
+
+[node name="Metals" type="Control" parent="Camera2D/ui/Top/Panel"]
+anchor_left = 0.6
+anchor_right = 0.7
+anchor_bottom = 1.0
+margin_right = 15.0
+
+[node name="Label" type="Label" parent="Camera2D/ui/Top/Panel/Metals"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+text = "Metals:"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="Camera2D/ui/Top/Panel/Metals"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+editable = false
+
+[node name="Coins" type="Control" parent="Camera2D/ui/Top/Panel"]
+anchor_left = 0.75
+anchor_right = 0.85
+anchor_bottom = 1.0
+margin_right = 15.0
+
+[node name="Label" type="Label" parent="Camera2D/ui/Top/Panel/Coins"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+text = "Coins:"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="Camera2D/ui/Top/Panel/Coins"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+editable = false
 
 [node name="SelectNode" type="Node2D" parent="."]
 script = ExtResource( 8 )

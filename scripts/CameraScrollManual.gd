@@ -5,7 +5,12 @@ onready var tile_map = get_parent().find_node("TileMap")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var speed = 6
+const SPEED_HIGH = 30
+const SPEED_MEDIUM = 20
+const SPEED_LOW = 10
+
+var speed_modifier = 1
+var speed = SPEED_LOW
 var zoom_amount = 0.25
 var lerp_speed = 3.9
 var wait_on_generate = 0.0
@@ -35,6 +40,11 @@ func _process(delta):
 	#print("Zoom X: ", zoom.x, "    Zoom Y: ", zoom.y)
 	transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
 	#set_lin_velocity_on_just_press()
+	if Input.is_action_just_pressed("shift"):
+		speed *= 10
+	elif Input.is_action_just_released("shift"):
+		speed /= 10
+	
 	if Input.is_action_pressed('left'):
 		follow_point.transform.origin.x -= speed
 		transform.origin.x = lerp(transform.origin.x, follow_point.transform.origin.x, delta * lerp_speed)
@@ -48,24 +58,23 @@ func _process(delta):
 		follow_point.transform.origin.y += speed
 		transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
 	if Input.is_action_just_released('wheel_down'):
-		if zoom.x > 10:
-			speed += 4
-			zoom_amount = 1
-		elif zoom.x > 5:
-			speed += 2
-			zoom_amount = .5
-		else:
-			speed += 1
-			zoom_amount = 0.25
-			
-		zoom.x += zoom_amount
-		zoom.y += zoom_amount
+		if zoom.x < 10:
+			zoom.x += zoom_amount
+			zoom.y += zoom_amount
 	if Input.is_action_just_released('wheel_up'):
 		if zoom.y > 1:
-			zoom.x -= 0.25
-			zoom.y -= 0.25
-			speed -= 1
-			
+			zoom.x -= zoom_amount
+			zoom.y -= zoom_amount
+	
+	if zoom.x > 10:
+		speed = 20
+		zoom_amount = 1
+	elif zoom.x > 5:
+		speed = 12
+		zoom_amount = 0.5
+	else:
+		speed = 6
+		zoom_amount = 0.25
 func set_lin_velocity_on_just_press():
 	if Input.is_action_just_pressed("down"):
 		follow_point.transform.origin = transform.origin
