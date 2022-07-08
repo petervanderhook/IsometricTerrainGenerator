@@ -107,18 +107,18 @@ position = Vector2( 454.5, 392.5 )
 scale = Vector2( 1.77148, 1.51367 )
 texture = SubResource( 8 )
 
-[node name="ActiveUnits" type="YSort" parent="."]
+[node name="ActiveUnits" type="YSort" parent="ActiveGame"]
 
-[node name="Unit" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 146, 142 )
 
-[node name="Unit2" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit2" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 58, 142 )
 
-[node name="Unit3" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit3" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 207, 76 )
 
-[node name="Unit4" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit4" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 47, 37 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

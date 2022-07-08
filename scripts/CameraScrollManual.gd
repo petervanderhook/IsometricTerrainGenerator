@@ -1,7 +1,7 @@
 extends Camera2D
 onready var follow_point = get_parent().find_node("Camera Follow")
 onready var tile_map = get_parent().find_node("TileMap")
-
+onready var active_game = get_parent().find_node("ActiveGame")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -9,9 +9,10 @@ const SPEED_HIGH = 30
 const SPEED_MEDIUM = 20
 const SPEED_LOW = 10
 
+
 var speed_modifier = 1
 var speed = SPEED_LOW
-var zoom_amount = 0.25
+var zoom_amount = 0.1
 var lerp_speed = 3.9
 var wait_on_generate = 0.0
 var time = 0.0
@@ -68,24 +69,26 @@ func _process(delta):
 	if Input.is_action_pressed('down'):
 		follow_point.transform.origin.y += speed * speed_modifier
 		transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
-	#if Input.is_action_just_released('wheel_down'):
-		#if zoom.x < 10:
-		#	zoom.x += zoom_amount
-		#	zoom.y += zoom_amount
-	#if Input.is_action_just_released('wheel_up'):
-		#if zoom.y > 1:
-		#	zoom.x -= zoom_amount
-		#	zoom.y -= zoom_amount
+	if Input.is_action_just_released('wheel_down'):
+		if active_game.scale.x > 0.1:
+			active_game.scale.x -= zoom_amount
+			active_game.scale.y -= zoom_amount
+		print(active_game.scale)
+	if Input.is_action_just_released('wheel_up'):
+		if active_game.scale.x < 1:
+			active_game.scale.x += zoom_amount
+			active_game.scale.y += zoom_amount
+		print(active_game.scale)
 	
-	if zoom.x > 10:
-		speed = 20
-		zoom_amount = 1
-	elif zoom.x > 5:
-		speed = 12
-		zoom_amount = 0.5
-	else:
-		speed = 6
-		zoom_amount = 0.25
+	#if tile_map.scale.x > 10:
+	#	speed = SPEED_HIGH
+	#	zoom_amount = 1
+	#elif tile_map.scale.x > 5:
+	#	speed = SPEED_MEDIUM
+	#	zoom_amount = 0.5
+	#else:
+	#	speed = SPEED_LOW
+	#	zoom_amount = 0.25
 	
 	
 	if is_panning:
