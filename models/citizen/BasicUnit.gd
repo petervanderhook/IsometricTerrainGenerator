@@ -7,7 +7,7 @@ const IS_BUILDING = false
 # ONready Vars
 onready var navigator = find_parent("Root").find_node("Navigation2D")
 onready var user_selected_light = $UserSelected
-onready var speed = 85
+onready var speed = 45
 onready var root = find_parent("Root")
 onready var nav = root.find_node('ActiveGame')
 onready var rays = $Rays
@@ -17,7 +17,7 @@ enum States {IDLE, MOVING, ATTACKING, BUILDING}
 var state = States.IDLE
 var velocity = Vector2.ZERO
 var target = Vector2.ZERO
-var move_satisfaction_distance = 7
+var move_satisfaction_distance = 10
 var last_assigned_pos
 
 var path := PoolVector2Array()
@@ -31,6 +31,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	update_speed()
 	if (state == States.MOVING):
 		set_collision_layer_bit(3, false)
 		set_collision_layer_bit(2, true)
@@ -38,26 +39,32 @@ func _process(delta):
 		set_collision_layer_bit(3, true)
 		set_collision_layer_bit(2, false)
 	if selected:	
-		print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
+		#print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
+		pass
 	if Input.is_action_just_pressed("right_click") and selected:
 		#print("Clicked")
 		var mouse_pos = get_global_mouse_position()
 		var current_pos = global_position
 		print(current_pos, mouse_pos)
 		var new_path = nav.get_simple_path(current_pos, mouse_pos, true)
+		print(new_path)
 		if len(new_path) > 0:
 			set_path(new_path)
 			print(path)
-			last_assigned_pos = path[0]
+			last_assigned_pos = path[0] / find_parent("ActiveGame").scale
 		else:
 			global_position += Vector2(0, 0.001)
+			
+	
 	if len(path) > 0:
-		state = States.MOVING
-		if global_position.distance_to(path[0]) > move_satisfaction_distance:
+		if global_position.distance_to(path[0]) > (move_satisfaction_distance ):
 			move_to_position(last_assigned_pos)
+			print("Moving to ", global_position , " from ", global_position / find_parent("ActiveGame").scale)
+			print("Minimum: ", move_satisfaction_distance, " Distance: ", global_position.distance_to(path[0]))
+			print(path)
 		elif len(path) > 1:
 			path.remove(0)
-			last_assigned_pos = path[0]
+			last_assigned_pos = path[0] / find_parent("ActiveGame").scale
 			move_to_position(last_assigned_pos)
 		else:
 			path = []
@@ -102,3 +109,6 @@ func get_valid_ray():
 		if !ray.is_colliding():
 			return ray
 	return null
+
+func update_speed():
+	speed = 45 * find_parent('ActiveGame').scale

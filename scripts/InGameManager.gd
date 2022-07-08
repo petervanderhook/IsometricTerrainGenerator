@@ -61,4 +61,3 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion:
 			#print("Moving")
 			select_draw.update_status(drag_start, get_global_mouse_position(), dragging)
-
