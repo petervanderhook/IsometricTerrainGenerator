@@ -14,6 +14,11 @@ config/name="ISORPG"
 run/main_scene="res://scenes/RootScene.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
 [global]
 
 display\=false

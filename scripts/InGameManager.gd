@@ -8,7 +8,7 @@ const terrain_ids = [1358, 1374]
 
 onready var select_draw = find_node("SelectNode")
 
-onready var active_units = $ActiveUnits
+onready var active_units = $ActiveGame/ActiveUnits
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

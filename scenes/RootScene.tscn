@@ -106,18 +106,18 @@ position = Vector2( 454.5, 392.5 )
 scale = Vector2( 1.77148, 1.51367 )
 texture = SubResource( 8 )
 
-[node name="ActiveUnits" type="YSort" parent="."]
+[node name="ActiveUnits" type="YSort" parent="ActiveGame"]
 
-[node name="Unit" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 146, 142 )
 
-[node name="Unit2" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit2" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 58, 142 )
 
-[node name="Unit3" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit3" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 207, 76 )
 
-[node name="Unit4" parent="ActiveUnits" instance=ExtResource( 6 )]
+[node name="Unit4" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 47, 37 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -135,13 +135,6 @@ margin_right = 189.0
 margin_bottom = 24.0
 text = "12141249124"
 script = ExtResource( 5 )
-
-[node name="Camera Follow" type="Position2D" parent="Camera2D"]
-visible = false
-
-[node name="Sprite" type="Sprite" parent="Camera2D/Camera Follow"]
-scale = Vector2( 7.1, 7.1 )
-texture = ExtResource( 4 )
 
 [node name="ui" type="Control" parent="Camera2D"]
 anchor_right = 1.0
@@ -277,5 +270,22 @@ anchor_bottom = 1.0
 text = "0"
 editable = false
 
+[node name="PanelContainer" type="PanelContainer" parent="Camera2D/ui"]
+margin_left = -512.0
+margin_top = 128.0
+margin_right = 511.0
+margin_bottom = 296.0
+
+[node name="Panel" type="Panel" parent="Camera2D/ui/PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
 [node name="SelectNode" type="Node2D" parent="."]
 script = ExtResource( 8 )
+
+[node name="Camera Follow" type="Position2D" parent="."]
+visible = false
+
+[node name="Sprite" type="Sprite" parent="Camera Follow"]
+scale = Vector2( 7.1, 7.1 )
+texture = ExtResource( 4 )

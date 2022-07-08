@@ -387,8 +387,24 @@ func perlin_worm_river(start_coords):
 		set_cell(current_position[0], current_position[1], 0)
 		past_tiles.append(current_position)
 		
-
-
-
-
-
+func calculate_bounds():
+	var used_cells = get_used_cells()
+	var result = {
+		"x": 0,
+		"y": 0,
+		"w": 0,
+		"h": 0
+	}
+	
+	for pos in used_cells:
+		pos *= 32
+		if pos.x < result["x"]:
+			result["x"] = int(pos.x)
+		elif pos.x > result["w"]:
+			result["w"] = int(pos.x)
+		if pos.y < result["y"]:
+			result["y"] = int(pos.y)
+		elif pos.y > result["h"]:
+			result["h"] = int(pos.y)
+	
+	return result

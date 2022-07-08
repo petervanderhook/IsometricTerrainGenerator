@@ -5,10 +5,10 @@ const IS_UNIT = true
 const IS_BUILDING = false
 
 # ONready Vars
-onready var navigator = get_parent().get_parent().find_node("Navigation2D")
+onready var navigator = find_parent("Root").find_node("Navigation2D")
 onready var user_selected_light = $UserSelected
 onready var speed = 85
-onready var root = get_parent().get_parent()
+onready var root = find_parent("Root")
 onready var nav = root.find_node('ActiveGame')
 onready var rays = $Rays
 onready var ray_front = $Rays/Front
