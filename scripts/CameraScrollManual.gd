@@ -13,6 +13,8 @@ const SPEED_LOW = 10
 var speed_modifier = 1
 var speed = SPEED_LOW
 var zoom_amount = 0.1
+var unzoomed_origin = Vector2(0,0)
+var game_scale = Vector2(1,1)
 var lerp_speed = 3.9
 var wait_on_generate = 0.0
 var time = 0.0
@@ -28,6 +30,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	time += delta
+	unzoomed_origin = follow_point.transform.origin / game_scale
 	var current_tile_on_focus = tile_map.world_to_map(transform.origin)
 	var current_chunk = get_current_chunk(current_tile_on_focus)
 	
@@ -59,26 +62,17 @@ func _process(delta):
 	
 	if Input.is_action_pressed('left'):
 		follow_point.transform.origin.x -= speed * speed_modifier
-		transform.origin.x = lerp(transform.origin.x, follow_point.transform.origin.x, delta * lerp_speed)
 	if Input.is_action_pressed('right'):
 		follow_point.transform.origin.x += speed * speed_modifier
-		transform.origin.x = lerp(transform.origin.x, follow_point.transform.origin.x, delta * lerp_speed)
 	if Input.is_action_pressed('up'):
 		follow_point.transform.origin.y -= speed * speed_modifier
-		transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
 	if Input.is_action_pressed('down'):
 		follow_point.transform.origin.y += speed * speed_modifier
-		transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
 	if Input.is_action_just_released('wheel_down'):
-		if active_game.scale.x > 0.1:
-			active_game.scale.x -= zoom_amount
-			active_game.scale.y -= zoom_amount
-		print(active_game.scale)
+		handle_zoom("out")
+	
 	if Input.is_action_just_released('wheel_up'):
-		if active_game.scale.x < 1:
-			active_game.scale.x += zoom_amount
-			active_game.scale.y += zoom_amount
-		print(active_game.scale)
+		handle_zoom("in")
 	
 	#if tile_map.scale.x > 10:
 	#	speed = SPEED_HIGH
@@ -95,6 +89,11 @@ func _process(delta):
 		var mouse_pos = get_viewport().get_mouse_position()
 		print("panning: ", pan_start - mouse_pos)
 		follow_point.transform.origin = pan_reference + (pan_start - mouse_pos)
+	
+	if is_instance_valid(active_game):
+		active_game.scale = lerp(active_game.scale, game_scale, delta * lerp_speed)
+	if is_instance_valid(self):
+		transform.origin = lerp(transform.origin, follow_point.transform.origin, delta * lerp_speed)
 	
 func set_lin_velocity_on_just_press():
 	if Input.is_action_just_pressed("down"):
@@ -144,3 +143,17 @@ func get_current_chunk(focused_tile):
 		if return_chunk[1] == 0:
 			return_chunk[1] = "-0"
 	return return_chunk
+
+func handle_zoom(direction):
+	var camera_pos = follow_point.transform.origin
+	
+	if direction == "out":
+		if game_scale.x > 0.1:
+			print("zoomed out")
+			game_scale -= Vector2(zoom_amount, zoom_amount)
+	elif direction == "in":
+		if game_scale.x < 1:
+			print("zoomed in")
+			game_scale += Vector2(zoom_amount, zoom_amount)
+	
+	follow_point.transform.origin = unzoomed_origin * game_scale
