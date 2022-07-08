@@ -90,8 +90,8 @@ func _process(delta):
 		print("panning: ", pan_start - mouse_pos)
 		follow_point.transform.origin = pan_reference + (pan_start - mouse_pos)
 	
-	if is_instance_valid(active_game):
-		active_game.scale = lerp(active_game.scale, game_scale, delta * lerp_speed)
+	#if is_instance_valid(active_game):
+	#	active_game.scale = lerp(active_game.scale, game_scale, delta * lerp_speed)
 	if is_instance_valid(self):
 		transform.origin = lerp(transform.origin, follow_point.transform.origin, delta * lerp_speed)
 	

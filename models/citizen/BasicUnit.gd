@@ -45,13 +45,12 @@ func _process(delta):
 		#print("Clicked")
 		var mouse_pos = get_global_mouse_position()
 		var current_pos = global_position
-		print(current_pos, mouse_pos)
 		var new_path = nav.get_simple_path(current_pos, mouse_pos, true)
 		print(new_path)
 		if len(new_path) > 0:
 			set_path(new_path)
 			print(path)
-			last_assigned_pos = path[0] / find_parent("ActiveGame").scale
+			last_assigned_pos = path[0] / nav.scale
 		else:
 			global_position += Vector2(0, 0.001)
 			
@@ -59,12 +58,10 @@ func _process(delta):
 	if len(path) > 0:
 		if global_position.distance_to(path[0]) > (move_satisfaction_distance ):
 			move_to_position(last_assigned_pos)
-			print("Moving to ", global_position , " from ", global_position / find_parent("ActiveGame").scale)
-			print("Minimum: ", move_satisfaction_distance, " Distance: ", global_position.distance_to(path[0]))
-			print(path)
+			
 		elif len(path) > 1:
 			path.remove(0)
-			last_assigned_pos = path[0] / find_parent("ActiveGame").scale
+			last_assigned_pos = path[0]
 			move_to_position(last_assigned_pos)
 		else:
 			path = []
@@ -111,4 +108,4 @@ func get_valid_ray():
 	return null
 
 func update_speed():
-	speed = 45 * find_parent('ActiveGame').scale
+	speed = 45 * nav.scale

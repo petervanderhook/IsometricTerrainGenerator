@@ -280,7 +280,7 @@ margin_bottom = 296.0
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1016.0
-margin_bottom = 161.0
+margin_bottom = 97.0
 
 [node name="SelectNode" type="Node2D" parent="."]
 script = ExtResource( 8 )
