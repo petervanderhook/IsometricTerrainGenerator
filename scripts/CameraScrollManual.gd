@@ -155,5 +155,6 @@ func handle_zoom(direction):
 		if game_scale.x < 1:
 			print("zoomed in")
 			game_scale += Vector2(zoom_amount, zoom_amount)
-	
+	active_game.scale = game_scale
 	follow_point.transform.origin = unzoomed_origin * game_scale
+	transform.origin = follow_point.transform.origin
