@@ -15,6 +15,7 @@ onready var ray_front = $Rays/Front
 
 enum States {IDLE, MOVING, ATTACKING, BUILDING}
 var state = States.IDLE
+var start_zoom = Vector2.ONE
 var velocity = Vector2.ZERO
 var target = Vector2.ZERO
 var move_satisfaction_distance = 10
@@ -45,27 +46,29 @@ func _process(delta):
 		#print("Clicked")
 		var mouse_pos = get_global_mouse_position()
 		var current_pos = global_position
-		print(current_pos, mouse_pos)
 		var new_path = nav.get_simple_path(current_pos, mouse_pos, true)
-		print(new_path)
+		target = mouse_pos
+		start_zoom = nav.scale
 		if len(new_path) > 0:
 			set_path(new_path)
-			print(path)
-			last_assigned_pos = path[0] / find_parent("ActiveGame").scale
+			last_assigned_pos = path[0]
 		else:
 			global_position += Vector2(0, 0.001)
-			
+	
+	
 	
 	if len(path) > 0:
-		if global_position.distance_to(path[0]) > (move_satisfaction_distance ):
-			move_to_position(last_assigned_pos)
-			print("Moving to ", global_position , " from ", global_position / find_parent("ActiveGame").scale)
-			print("Minimum: ", move_satisfaction_distance, " Distance: ", global_position.distance_to(path[0]))
-			print(path)
+		if start_zoom != nav.scale:
+			target = nav.scale * (target / start_zoom)
+			path = nav.get_simple_path(global_position, target)
+			start_zoom = nav.scale
+		if global_position.distance_to(path[0]) > (move_satisfaction_distance):
+			move_to_position(last_assigned_pos / nav.scale)
+			
 		elif len(path) > 1:
 			path.remove(0)
-			last_assigned_pos = path[0] / find_parent("ActiveGame").scale
-			move_to_position(last_assigned_pos)
+			last_assigned_pos = path[0]
+			move_to_position(last_assigned_pos / nav.scale)
 		else:
 			path = []
 			state = States.IDLE
@@ -90,12 +93,8 @@ func move_to_position(pos):
 func move_with_avoid():
 	rays.rotation = velocity.angle()
 	if obstacle_ahead():
-		print("OBSTACLE")
 		var viable_ray = get_valid_ray()
 		if viable_ray:
-			#var temp_point = viable_ray.get_child(0).global_position
-			#path.insert(0, temp_point)
-			#last_assigned_pos = temp_point
 			velocity = Vector2.RIGHT.rotated(rays.rotation + viable_ray.rotation) * speed
 	move_and_slide(velocity)
 	move_and_slide(velocity)
@@ -111,4 +110,4 @@ func get_valid_ray():
 	return null
 
 func update_speed():
-	speed = 45 * find_parent('ActiveGame').scale
+	speed = 45 * nav.scale

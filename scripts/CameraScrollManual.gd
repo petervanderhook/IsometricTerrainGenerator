@@ -35,18 +35,11 @@ func _process(delta):
 	var current_chunk = get_current_chunk(current_tile_on_focus)
 	
 	if tile_map.generated:
-		#print("Chunk: ", current_chunk, "    Tile: ", current_tile_on_focus)
 		if (tile_map.get_cell(current_tile_on_focus[0], current_tile_on_focus[1]) == -1) and (wait_on_generate < (time + 2)):
 			wait_on_generate = time
-			#print("Running: ", current_chunk)
+
 			tile_map.generate_chunk([current_chunk[0], current_chunk[1]])
-		
-		pass
-	#print(Vector2((follow_point.transform.origin.x / 128), (follow_point.transform.origin.y / 128)))
-	transform.origin.x = lerp(transform.origin.x, follow_point.transform.origin.x, delta * lerp_speed)
-	#print("Zoom X: ", zoom.x, "    Zoom Y: ", zoom.y)
-	transform.origin.y = lerp(transform.origin.y, follow_point.transform.origin.y, delta * lerp_speed)
-	#set_lin_velocity_on_just_press()
+	
 	if Input.is_action_just_pressed("shift"):
 		speed_modifier = 10
 	elif Input.is_action_just_released("shift"):
@@ -74,24 +67,10 @@ func _process(delta):
 	if Input.is_action_just_released('wheel_up'):
 		handle_zoom("in")
 	
-	#if tile_map.scale.x > 10:
-	#	speed = SPEED_HIGH
-	#	zoom_amount = 1
-	#elif tile_map.scale.x > 5:
-	#	speed = SPEED_MEDIUM
-	#	zoom_amount = 0.5
-	#else:
-	#	speed = SPEED_LOW
-	#	zoom_amount = 0.25
-	
-	
 	if is_panning:
 		var mouse_pos = get_viewport().get_mouse_position()
-		print("panning: ", pan_start - mouse_pos)
 		follow_point.transform.origin = pan_reference + (pan_start - mouse_pos)
 	
-	if is_instance_valid(active_game):
-		active_game.scale = lerp(active_game.scale, game_scale, delta * lerp_speed)
 	if is_instance_valid(self):
 		transform.origin = lerp(transform.origin, follow_point.transform.origin, delta * lerp_speed)
 	
@@ -149,11 +128,9 @@ func handle_zoom(direction):
 	
 	if direction == "out":
 		if game_scale.x > 0.1:
-			print("zoomed out")
 			game_scale -= Vector2(zoom_amount, zoom_amount)
 	elif direction == "in":
 		if game_scale.x < 1:
-			print("zoomed in")
 			game_scale += Vector2(zoom_amount, zoom_amount)
 	active_game.scale = game_scale
 	follow_point.transform.origin = unzoomed_origin * game_scale
