@@ -1,0 +1,19 @@
+[gd_scene format=2]
+
+[node name="Minimap" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Minimap" type="ViewportContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 407.0
+margin_right = -0.5
+
+[node name="Viewport" type="Viewport" parent="Minimap"]
+size = Vector2( 104, 104 )
+transparent_bg = true
+handle_input_locally = false
+usage = 0
+render_target_update_mode = 3
