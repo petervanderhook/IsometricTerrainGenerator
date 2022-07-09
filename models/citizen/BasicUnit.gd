@@ -66,6 +66,10 @@ func _process(delta):
 			target = nav.scale * (target / start_zoom)
 			path = nav.get_simple_path(global_position, target)
 			start_zoom = nav.scale
+			if len(path) == 0:
+				path = []
+				state = States.IDLE
+				velocity = Vector2.ZERO
 		if global_position.distance_to(path[0]) > (move_satisfaction_distance):
 			move_to_position(last_assigned_pos / nav.scale)
 			

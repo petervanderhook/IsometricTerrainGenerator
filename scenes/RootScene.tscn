@@ -186,15 +186,15 @@ anchor_bottom = 1.0
 margin_left = 376.5
 
 [node name="Viewport" type="Viewport" parent="Camera2D/ui/Bottom/Panel/Minimap"]
-size = Vector2( 104, 104 )
+size = Vector2( 124, 124 )
 transparent_bg = true
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 3
 
 [node name="ActiveGame" parent="Camera2D/ui/Bottom/Panel/Minimap/Viewport" instance=ExtResource( 1 )]
-position = Vector2( 50, 0 )
-scale = Vector2( 0.004, 0.004 )
+position = Vector2( 62, 0 )
+scale = Vector2( 0.004, 0.007 )
 
 [node name="SelectNode" type="Node2D" parent="."]
 script = ExtResource( 8 )
