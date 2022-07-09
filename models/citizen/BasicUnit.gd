@@ -12,6 +12,7 @@ onready var root = find_parent("Root")
 onready var nav = root.find_node('ActiveGame')
 onready var rays = $Rays
 onready var ray_front = $Rays/Front
+onready var fog_map = nav.find_node("FogMap")
 
 enum States {IDLE, MOVING, ATTACKING, BUILDING}
 var state = States.IDLE
@@ -20,6 +21,8 @@ var velocity = Vector2.ZERO
 var target = Vector2.ZERO
 var move_satisfaction_distance = 10
 var last_assigned_pos
+var owned_by_player = true
+var line_of_sight = 256
 
 var path := PoolVector2Array()
 var selected = false
@@ -39,7 +42,8 @@ func _process(delta):
 	elif state == States.IDLE:
 		set_collision_layer_bit(3, true)
 		set_collision_layer_bit(2, false)
-	if selected:	
+	if selected:
+		#print()
 		#print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
 		pass
 	if Input.is_action_just_pressed("right_click") and selected:
@@ -108,6 +112,19 @@ func get_valid_ray():
 		if !ray.is_colliding():
 			return ray
 	return null
+
+
+func get_viewed_tiles():
+	# Returns tiles in range of the units line of sight
+	var return_list = []
+	var start_tile = fog_map.world_to_map(global_position)
+	for x in range( -10, 10):
+		for y in range(-10, 10):
+			if global_position.distance_to(fog_map.map_to_world(Vector2(x, y))) < line_of_sight:
+				return_list.append([x, y])
+	
+	#print("Returning: ", return_list)
+	return return_list
 
 func update_speed():
 	speed = 45 * nav.scale

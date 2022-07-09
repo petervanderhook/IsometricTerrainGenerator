@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://tiles/resources/world-tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/TileMapManager.gd" type="Script" id=2]
@@ -16,6 +16,40 @@
 [ext_resource path="res://images/coins.png" type="Texture" id=14]
 [ext_resource path="res://images/metal-bar.png" type="Texture" id=15]
 [ext_resource path="res://tiles/resources/build-tiles.tres" type="TileSet" id=16]
+[ext_resource path="res://scenes/FogMapManager.gd" type="Script" id=17]
+[ext_resource path="res://tiles/fog-tile/plane-dark.png" type="Texture" id=18]
+[ext_resource path="res://tiles/fog-tile/plane-fog.png" type="Texture" id=19]
+[ext_resource path="res://scenes/ActiveUnitManager.gd" type="Script" id=20]
+
+[sub_resource type="TileSet" id=11]
+0/name = "plane-dark.png 0"
+0/texture = ExtResource( 18 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 64, 128, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "plane-fog.png 1"
+1/texture = ExtResource( 19 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 0.486275 )
+1/region = Rect2( 0, 64, 128, 64 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
 
 [sub_resource type="OpenSimplexNoise" id=1]
 seed = 1470
@@ -69,7 +103,6 @@ script = ExtResource( 7 )
 [node name="ActiveGame" type="Navigation2D" parent="."]
 
 [node name="TerrainMap" type="TileMap" parent="ActiveGame"]
-scale = Vector2( 1.00799, 0.997593 )
 mode = 1
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 64 )
@@ -85,6 +118,13 @@ tile_set = ExtResource( 16 )
 cell_size = Vector2( 128, 64 )
 format = 1
 tile_data = PoolIntArray( -720906, 0, 0, -655370, 0, 0, -589838, 1, 0, -589836, 1, 0, -458766, 1, 0, -458764, 1, 0 )
+
+[node name="FogMap" type="TileMap" parent="ActiveGame"]
+mode = 1
+tile_set = SubResource( 11 )
+cell_size = Vector2( 128, 64 )
+format = 1
+script = ExtResource( 17 )
 
 [node name="PerlinNoise" type="Node" parent="ActiveGame"]
 
@@ -117,6 +157,7 @@ scale = Vector2( 1.77148, 1.51367 )
 texture = SubResource( 8 )
 
 [node name="ActiveUnits" type="YSort" parent="ActiveGame"]
+script = ExtResource( 20 )
 
 [node name="Unit" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
 position = Vector2( 146, 142 )
@@ -128,7 +169,7 @@ position = Vector2( 58, 142 )
 position = Vector2( 207, 76 )
 
 [node name="Unit4" parent="ActiveGame/ActiveUnits" instance=ExtResource( 6 )]
-position = Vector2( 47, 37 )
+position = Vector2( 4, 14 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 rotating = true

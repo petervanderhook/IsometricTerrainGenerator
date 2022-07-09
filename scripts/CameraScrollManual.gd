@@ -1,6 +1,6 @@
 extends Camera2D
 onready var follow_point = get_parent().find_node("Camera Follow")
-onready var tile_map = get_parent().find_node("TileMap")
+onready var tile_map = get_parent().find_node("TerrainMap")
 onready var active_game = get_parent().find_node("ActiveGame")
 # Declare member variables here. Examples:
 # var a = 2

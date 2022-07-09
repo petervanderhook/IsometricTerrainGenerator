@@ -95,6 +95,7 @@ onready var perlin_trees = get_parent().find_node("PerlinTrees")
 onready var perlin_fields = get_parent().find_node("PerlinFields")
 onready var perlin_rivers = get_parent().find_node("PerlinRivers")
 onready var perlin_rocks = get_parent().find_node("PerlinRocks")
+onready var fog_map = get_parent().find_node("FogMap")
 
 # Export Vars for map generation
 export var min_distance_per_river = 30
@@ -263,6 +264,10 @@ func delete_world():
 func init_world():
 	
 	set_global_seed(get_global_seed())
+	#Set Bounds for Fog of War
+	fog_map.x_bounds = x_bounds
+	fog_map.y_bounds = y_bounds
+	
 	# Reset biome arrays
 	tree_biome_tiles = []
 	river_biome_tiles = []
@@ -283,10 +288,11 @@ func init_world():
 	for b in range(0, world_size):
 		for c in range(0, world_size):
 			gen_list.append([b, c])
-	
 	for genchunk in gen_list:
 		#print("Generating terrain chunk: ", genchunk)
 		generate_chunk(genchunk)
+		print("Initializing Fog")
+		initialize_fog(genchunk)
 	
 	print("Generating Trees")
 	iterate_trees()
@@ -297,6 +303,10 @@ func init_world():
 	print("Generating Rivers")
 	iterate_rivers()
 	#print("Finished")
+	
+
+func initialize_fog(chunk):
+	fog_map.init_fog(chunk)
 	
 	
 func iterate_trees():
