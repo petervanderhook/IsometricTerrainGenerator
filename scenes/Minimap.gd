@@ -90,12 +90,14 @@ var rock_biome_tiles = []
 var field_biome_tiles = []
 var global_seed = 1470
 
-onready var perlin_terrain = get_parent().find_node("PerlinTerrain")
-onready var perlin_trees = get_parent().find_node("PerlinTrees")
-onready var perlin_fields = get_parent().find_node("PerlinFields")
-onready var perlin_rivers = get_parent().find_node("PerlinRivers")
-onready var perlin_rocks = get_parent().find_node("PerlinRocks")
-onready var fog_map = get_parent().find_node("FogMap")
+onready var active_game = find_parent("Root").find_node("ActiveGame")
+onready var perlin_terrain = active_game.find_node("PerlinTerrain")
+onready var perlin_trees = active_game.find_node("PerlinTrees")
+onready var perlin_fields = active_game.find_node("PerlinFields")
+onready var perlin_rivers = active_game.find_node("PerlinRivers")
+onready var perlin_rocks = active_game.find_node("PerlinRocks")
+onready var terrain_map = active_game.find_node("TerrainMap")
+onready var fog_map = active_game.find_node("FogMap")
 
 # Export Vars for map generation
 export var min_distance_per_river = 30
@@ -112,33 +114,17 @@ func _ready():
 	time = 0
 	time_to_wait = 0.0
 	rng.randomize()
-	seed_input = find_parent("Root").find_node("textinput")
-	seed_input.text = str(global_seed)
 	init_world()
 	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	time += delta
-	if time > time_to_wait:
-		time_to_wait += 1
-		if !generated:
-				print("Generating World...")
-		else:
-			#print("Iteration: ", count)
-			#print("Chunks: ", rendered_chunks)
-			pass
-			
 	if Input.is_action_just_pressed("space"):
 		count = 0
 		time = 0
 		time_to_wait = 0.0
-		perlin_terrain.texture.noise.seed = int(seed_input.text)
 		init_world()
-	if Input.is_action_just_pressed("tilda"):
-		pass
-		#print(export_tile_bool())
 	
 
 
@@ -224,8 +210,7 @@ func generate_tile(coord_array, value):
 	set_cell(coord_array[0], coord_array[1], tile_num)
 
 func get_global_seed():
-	print("Seed obtained: ", seed_input.text)
-	return int(seed_input.text)
+	return terrain_map.global_seed
 
 func set_texture_seed(seed_fetched):
 	perlin_rivers.texture.noise.set_seed(seed_fetched)
@@ -292,7 +277,7 @@ func init_world():
 		#print("Generating terrain chunk: ", genchunk)
 		generate_chunk(genchunk)
 		print("Initializing Fog")
-		initialize_fog(genchunk)
+		#initialize_fog(genchunk)
 	
 	print("Generating Trees")
 	iterate_trees()
@@ -397,24 +382,3 @@ func perlin_worm_river(start_coords):
 		set_cell(current_position[0], current_position[1], 0)
 		past_tiles.append(current_position)
 		
-func calculate_bounds():
-	var used_cells = get_used_cells()
-	var result = {
-		"x": 0,
-		"y": 0,
-		"w": 0,
-		"h": 0
-	}
-	
-	for pos in used_cells:
-		pos *= 32
-		if pos.x < result["x"]:
-			result["x"] = int(pos.x)
-		elif pos.x > result["w"]:
-			result["w"] = int(pos.x)
-		if pos.y < result["y"]:
-			result["y"] = int(pos.y)
-		elif pos.y > result["h"]:
-			result["h"] = int(pos.y)
-	
-	return result
