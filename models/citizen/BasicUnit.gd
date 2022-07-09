@@ -47,19 +47,19 @@ func _process(delta):
 		#print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
 		pass
 	if Input.is_action_just_pressed("right_click") and selected:
-		#print("Clicked")
-		var mouse_pos = get_global_mouse_position()
-		var current_pos = global_position
-		var new_path = nav.get_simple_path(current_pos, mouse_pos, true)
-		target = mouse_pos
-		start_zoom = nav.scale
-		if len(new_path) > 0:
-			set_path(new_path)
-			last_assigned_pos = path[0]
-		else:
-			global_position += Vector2(0, 0.001)
-	
-	
+		# Old Movement
+		old_move()
+
+
+
+
+
+
+
+
+
+
+
 	
 	if len(path) > 0:
 		if start_zoom != nav.scale:
@@ -122,8 +122,8 @@ func get_viewed_tiles():
 	# Returns tiles in range of the units line of sight
 	var return_list = []
 	var start_tile = fog_map.world_to_map(global_position)
-	for x in range( -10, 10):
-		for y in range(-10, 10):
+	for x in range( -5, 5):
+		for y in range(-5, 5):
 			if global_position.distance_to(fog_map.map_to_world(Vector2(x, y))) < line_of_sight:
 				return_list.append([x, y])
 	
@@ -132,3 +132,16 @@ func get_viewed_tiles():
 
 func update_speed():
 	speed = 45 * nav.scale
+
+func old_move():
+	#print("Clicked")
+	var mouse_pos = get_global_mouse_position()
+	var current_pos = global_position
+	var new_path = nav.get_simple_path(current_pos, mouse_pos, true)
+	target = mouse_pos
+	start_zoom = nav.scale
+	if len(new_path) > 0:
+		set_path(new_path)
+		last_assigned_pos = path[0]
+	else:
+		global_position += Vector2(0, 0.001)

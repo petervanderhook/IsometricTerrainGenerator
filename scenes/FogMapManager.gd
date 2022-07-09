@@ -2,6 +2,7 @@ extends TileMap
 var x_bounds = [0, 0]
 var y_bounds = [0, 0]
 var viewed_tiles = []
+var time = 0.0
 
 onready var active_units = get_parent().find_node("ActiveUnits")
 # Declare member variables here. Examples:
@@ -16,19 +17,25 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#pass
+	time += delta
+	if time > 0.5:
+		time = 0
+		update_viewed_tiles()
+
+func update_viewed_tiles():
 	var new_viewed_tiles = []
-	for unit in active_units.get_units_los():
+	for unit in active_units.get_units_with_los():
 		for tile in unit.get_viewed_tiles():
 			if not tile in new_viewed_tiles:
 				new_viewed_tiles.append(tile)
+		
+	print(len(new_viewed_tiles))
 	for tile in viewed_tiles:
 		if not tile in new_viewed_tiles:
 			set_cell(tile[0], tile[1], 1)
 	for tile in new_viewed_tiles:
 		set_cell(tile[0], tile[1], -1)
 	viewed_tiles = new_viewed_tiles
-
 
 
 func init_fog(chunk_bounds):

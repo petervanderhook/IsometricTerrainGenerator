@@ -15,7 +15,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func get_units_los():
+func get_units_with_los():
 	var visible_units = []
 	for unit in get_children():
 		if unit.owned_by_player:

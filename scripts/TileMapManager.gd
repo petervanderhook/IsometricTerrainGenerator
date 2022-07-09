@@ -120,16 +120,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	time += delta
-	if time > time_to_wait:
-		time_to_wait += 1
-		if !generated:
-				print("Generating World...")
-		else:
-			#print("Iteration: ", count)
-			#print("Chunks: ", rendered_chunks)
-			pass
-			
 	if Input.is_action_just_pressed("space"):
 		count = 0
 		time = 0
