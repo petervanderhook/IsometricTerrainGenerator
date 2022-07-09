@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://tiles/resources/world-tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/TileMapManager.gd" type="Script" id=2]
@@ -8,7 +8,6 @@
 [ext_resource path="res://models/citizen/Player.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/InGameManager.gd" type="Script" id=7]
 [ext_resource path="res://scripts/DrawSelectionBox.gd" type="Script" id=8]
-[ext_resource path="res://scripts/Top.gd" type="Script" id=9]
 [ext_resource path="res://images/chicken-leg.png" type="Texture" id=10]
 [ext_resource path="res://images/pouring-pot.png" type="Texture" id=11]
 [ext_resource path="res://images/rock.png" type="Texture" id=12]
@@ -21,6 +20,13 @@
 [ext_resource path="res://tiles/fog-tile/plane-fog.png" type="Texture" id=19]
 [ext_resource path="res://scenes/ActiveUnitManager.gd" type="Script" id=20]
 [ext_resource path="res://scenes/Minimap.gd" type="Script" id=21]
+[ext_resource path="res://images/hamburger-menu-active.png" type="Texture" id=22]
+[ext_resource path="res://images/hamburger-menu-hover.png" type="Texture" id=23]
+[ext_resource path="res://images/hamburger-menu-normal.png" type="Texture" id=24]
+[ext_resource path="res://images/hamburger-menu-disabled.png" type="Texture" id=25]
+[ext_resource path="res://scenes/Menu.gd" type="Script" id=26]
+[ext_resource path="res://scenes/MenuList.gd" type="Script" id=27]
+[ext_resource path="res://scenes/MenuBtn.gd" type="Script" id=28]
 
 [sub_resource type="TileSet" id=11]
 0/name = "plane-dark.png 0"
@@ -199,7 +205,6 @@ margin_left = -512.0
 margin_top = -296.0
 margin_right = 512.0
 margin_bottom = -256.0
-script = ExtResource( 9 )
 
 [node name="Panel" type="Panel" parent="Camera2D/ui/Top"]
 margin_left = 7.0
@@ -230,7 +235,8 @@ editable = false
 anchor_left = 0.15
 anchor_right = 0.25
 anchor_bottom = 1.0
-margin_right = 15.0
+margin_left = -30.5
+margin_right = -30.5
 
 [node name="Label" type="TextureRect" parent="Camera2D/ui/Top/Panel/Water"]
 anchor_right = 0.25
@@ -249,7 +255,8 @@ editable = false
 anchor_left = 0.3
 anchor_right = 0.4
 anchor_bottom = 1.0
-margin_right = 15.0
+margin_left = -81.0
+margin_right = -66.0
 rect_pivot_offset = Vector2( -270, 209 )
 
 [node name="Label" type="TextureRect" parent="Camera2D/ui/Top/Panel/Stone"]
@@ -269,7 +276,8 @@ editable = false
 anchor_left = 0.45
 anchor_right = 0.55
 anchor_bottom = 1.0
-margin_right = 15.0
+margin_left = -116.5
+margin_right = -101.5
 
 [node name="Label" type="TextureRect" parent="Camera2D/ui/Top/Panel/Wood"]
 anchor_right = 0.25
@@ -288,7 +296,8 @@ editable = false
 anchor_left = 0.6
 anchor_right = 0.7
 anchor_bottom = 1.0
-margin_right = 15.0
+margin_left = -152.0
+margin_right = -137.0
 
 [node name="Label" type="TextureRect" parent="Camera2D/ui/Top/Panel/Metals"]
 anchor_right = 0.25
@@ -307,7 +316,8 @@ editable = false
 anchor_left = 0.75
 anchor_right = 0.85
 anchor_bottom = 1.0
-margin_right = 15.0
+margin_left = -187.5
+margin_right = -172.5
 
 [node name="Label" type="TextureRect" parent="Camera2D/ui/Top/Panel/Coins"]
 anchor_right = 0.25
@@ -321,6 +331,41 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0"
 editable = false
+
+[node name="Menu" type="Control" parent="Camera2D/ui/Top/Panel"]
+margin_left = 985.0
+margin_right = 1011.0
+margin_bottom = 26.0
+script = ExtResource( 26 )
+menu_items = [ "Return to Menu", "Quit Match", "Report Player", "Credits", "Stats" ]
+
+[node name="TextureButton" type="TextureButton" parent="Camera2D/ui/Top/Panel/Menu"]
+margin_right = 26.0
+margin_bottom = 26.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 22 )
+texture_hover = ExtResource( 23 )
+texture_disabled = ExtResource( 25 )
+expand = true
+script = ExtResource( 28 )
+
+[node name="ItemList" type="PopupMenu" parent="Camera2D/ui/Top/Panel/Menu"]
+anchor_left = -4.615
+anchor_top = 1.0
+anchor_right = 1.231
+anchor_bottom = 3.423
+margin_left = -0.00999451
+margin_right = -2.006
+margin_bottom = 0.0019989
+script = ExtResource( 27 )
+
+[node name="Popup" type="PopupPanel" parent="Camera2D/ui/Top/Panel/Menu"]
+visible = true
+margin_left = -592.0
+margin_top = 177.0
+margin_right = -370.0
+margin_bottom = 401.0
 
 [node name="Bottom" type="PanelContainer" parent="Camera2D/ui"]
 margin_left = -512.0
@@ -371,3 +416,9 @@ visible = false
 [node name="Sprite" type="Sprite" parent="Camera Follow"]
 scale = Vector2( 7.1, 7.1 )
 texture = ExtResource( 4 )
+
+[connection signal="mouse_entered" from="Camera2D/ui/Top/Panel/Menu/TextureButton" to="Camera2D/ui/Top/Panel/Menu/TextureButton" method="_on_TextureButton_mouse_entered"]
+[connection signal="mouse_exited" from="Camera2D/ui/Top/Panel/Menu/TextureButton" to="Camera2D/ui/Top/Panel/Menu/TextureButton" method="_on_TextureButton_mouse_exited"]
+[connection signal="pressed" from="Camera2D/ui/Top/Panel/Menu/TextureButton" to="Camera2D/ui/Top/Panel/Menu" method="_on_Button_pressed"]
+[connection signal="mouse_entered" from="Camera2D/ui/Top/Panel/Menu/ItemList" to="Camera2D/ui/Top/Panel/Menu/ItemList" method="_on_ItemList_mouse_entered"]
+[connection signal="mouse_exited" from="Camera2D/ui/Top/Panel/Menu/ItemList" to="Camera2D/ui/Top/Panel/Menu/ItemList" method="_on_ItemList_mouse_exited"]
