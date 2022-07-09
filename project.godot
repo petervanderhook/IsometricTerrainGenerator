@@ -14,8 +14,14 @@ config/name="ISORPG"
 run/main_scene="res://scenes/RootScene.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+settings/fps/force_fps=60
+
 [display]
 
+window/size/width=1280
+window/size/height=720
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
@@ -88,4 +94,5 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+2d/options/use_nvidia_rect_flicker_workaround=true
 environment/default_environment="res://default_env.tres"

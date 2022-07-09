@@ -1,14 +1,12 @@
 extends Camera2D
+
 onready var follow_point = get_parent().find_node("Camera Follow")
 onready var tile_map = get_parent().find_node("TerrainMap")
 onready var active_game = get_parent().find_node("ActiveGame")
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+
 const SPEED_HIGH = 30
 const SPEED_MEDIUM = 20
 const SPEED_LOW = 10
-
 
 var speed_modifier = 1
 var speed = SPEED_LOW
@@ -22,12 +20,7 @@ var time = 0.0
 var is_panning = false
 var pan_start = Vector2(0,0)
 var pan_reference = Vector2(0,0)
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	time += delta
 	unzoomed_origin = follow_point.transform.origin / game_scale
@@ -83,10 +76,7 @@ func set_lin_velocity_on_just_press():
 		follow_point.transform.origin = transform.origin
 	if Input.is_action_just_pressed("right"):
 		follow_point.transform.origin = transform.origin
-		
-		
-		
-		
+
 func get_current_chunk(focused_tile):
 	var y_positive = true
 	var x_positive = true

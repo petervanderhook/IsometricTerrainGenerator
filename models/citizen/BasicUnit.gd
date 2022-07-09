@@ -27,13 +27,11 @@ var line_of_sight = 256
 var path := PoolVector2Array()
 var selected = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	last_assigned_pos = global_position
 	unselect()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	update_speed()
 	if (state == States.MOVING):
@@ -43,8 +41,7 @@ func _process(delta):
 		set_collision_layer_bit(3, true)
 		set_collision_layer_bit(2, false)
 	if selected:
-		#print()
-		#print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
+		# TODO do something when selected
 		pass
 	if Input.is_action_just_pressed("right_click") and selected:
 		# Old Movement
@@ -127,14 +124,12 @@ func get_viewed_tiles():
 			if global_position.distance_to(fog_map.map_to_world(Vector2(x, y))) < line_of_sight:
 				return_list.append([x, y])
 	
-	#print("Returning: ", return_list)
 	return return_list
 
 func update_speed():
 	speed = 45 * nav.scale
 
 func old_move():
-	#print("Clicked")
 	var mouse_pos = get_global_mouse_position()
 	var current_pos = global_position
 	var new_path = nav.get_simple_path(current_pos, mouse_pos, true)
