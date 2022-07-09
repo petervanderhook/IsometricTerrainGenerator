@@ -1,4 +1,4 @@
-extends ItemList
+extends PopupMenu
 
 var is_hovered = false
 

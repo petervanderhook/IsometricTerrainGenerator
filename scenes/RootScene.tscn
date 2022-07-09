@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://tiles/resources/world-tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/TileMapManager.gd" type="Script" id=2]
@@ -8,7 +8,6 @@
 [ext_resource path="res://models/citizen/Player.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/InGameManager.gd" type="Script" id=7]
 [ext_resource path="res://scripts/DrawSelectionBox.gd" type="Script" id=8]
-[ext_resource path="res://scripts/Top.gd" type="Script" id=9]
 [ext_resource path="res://images/chicken-leg.png" type="Texture" id=10]
 [ext_resource path="res://images/pouring-pot.png" type="Texture" id=11]
 [ext_resource path="res://images/rock.png" type="Texture" id=12]
@@ -207,7 +206,6 @@ margin_left = -512.0
 margin_top = -296.0
 margin_right = 512.0
 margin_bottom = -256.0
-script = ExtResource( 9 )
 
 [node name="Panel" type="Panel" parent="Camera2D/ui/Top"]
 margin_left = 7.0
@@ -340,7 +338,7 @@ margin_left = 985.0
 margin_right = 1011.0
 margin_bottom = 26.0
 script = ExtResource( 26 )
-menu_items = [ "Kyle's Mom", "Is a Big", "Fat Bitch.", "The Biggest", "Bitch", "In the Whole", "Wide", "World" ]
+menu_items = [ "Return to Menu", "Quit Match", "Report Player", "Credits", "Stats" ]
 
 [node name="TextureButton" type="TextureButton" parent="Camera2D/ui/Top/Panel/Menu"]
 margin_right = 26.0
@@ -353,16 +351,22 @@ texture_disabled = ExtResource( 25 )
 expand = true
 script = ExtResource( 28 )
 
-[node name="ItemList" type="ItemList" parent="Camera2D/ui/Top/Panel/Menu"]
-visible = false
+[node name="ItemList" type="PopupMenu" parent="Camera2D/ui/Top/Panel/Menu"]
 anchor_left = -4.615
 anchor_top = 1.0
-anchor_right = 1.154
-anchor_bottom = 8.692
+anchor_right = 1.231
+anchor_bottom = 3.423
 margin_left = -0.00999451
-margin_right = -0.00400162
-margin_bottom = 0.00799561
+margin_right = -2.006
+margin_bottom = 0.0019989
 script = ExtResource( 27 )
+
+[node name="Popup" type="PopupPanel" parent="Camera2D/ui/Top/Panel/Menu"]
+visible = true
+margin_left = -592.0
+margin_top = 177.0
+margin_right = -370.0
+margin_bottom = 401.0
 
 [node name="Bottom" type="PanelContainer" parent="Camera2D/ui"]
 margin_left = -512.0
