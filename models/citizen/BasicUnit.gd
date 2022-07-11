@@ -62,14 +62,16 @@ func _process(delta):
 		#print()
 		#print("1: ", get_collision_layer_bit(1), " 2: ", get_collision_layer_bit(2))
 		pass
-	if Input.is_action_just_pressed("right_click") and selected:
-		# Old Movement
-		var target_tile = terrain_map.world_to_map(get_global_mouse_position())
-		print("Moving from: ", terrain_map.world_to_map(global_position), " to : ", target_tile)
-		assigned_tile = target_tile
-		old_move()
-	old_move_process()
-	return
+	if Input.is_action_just_pressed("right_click"):
+		if selected:
+			# Old Movement
+			assigned_tile = terrain_map.world_to_map(get_global_mouse_position())
+			print("Moving from: ", terrain_map.world_to_map(global_position), " to : ", assigned_tile)
+			#old_move()
+		else:
+			#print(terrain_map.world_to_map(get_global_mouse_position()))
+			print(terrain_map.map_to_world(terrain_map.world_to_map(get_global_mouse_position())))
+	#old_move_process()
 	if current_tile != assigned_tile:
 		state = States.MOVING
 		new_move_process()
@@ -83,19 +85,29 @@ func new_move_process():
 	var possible_tiles = get_valid_tiles(current_tile)
 	var lowest_value = 99999
 	var chosen_tile = current_tile
+	if current_tile == assigned_tile:
+		return
 	# GET chosen tile
 	for tile in possible_tiles:
-		var value = get_manhattan_distance(tile, assigned_tile)
+		var value = abs(get_manhattan_distance(tile, assigned_tile))
 		if value < lowest_value:
 			chosen_tile = tile
 			lowest_value = value
-	
-	move_to_position(terrain_map.map_to_world(Vector2(chosen_tile[0], chosen_tile[1])) / nav.scale)
+		print(tile, " ", value)
+	print("Current Tile: ", current_tile, " Assigned Tile: ", assigned_tile, " Chosen Tile: ", chosen_tile, " Value: ", lowest_value)
+	var top_tile_pos = terrain_map.map_to_world(Vector2(chosen_tile[0], chosen_tile[1]))
+	top_tile_pos = Vector2(top_tile_pos.x, top_tile_pos.y + 32)
+	print("Moving to: ", top_tile_pos)
+	move_to_position(terrain_map.map_to_world(Vector2(chosen_tile[0], chosen_tile[1])))
 		#(global_position.distance_to(terrain_map.map_to_world(chosen_tile)) > (move_satisfaction_distance)):
 		
 
 func get_manhattan_distance(tile, target_tile):
-	return (tile[0] - target_tile[0]) + (tile[1] - target_tile[1])
+	
+	var target_tile_position = terrain_map.map_to_world(Vector2(target_tile[0], target_tile[1]))
+	var start_tile_position = terrain_map.map_to_world(Vector2(tile[0], tile[1]))
+	var return_val = (start_tile_position.x - target_tile_position.x) + (start_tile_position.y - target_tile_position.y)
+	return return_val
 	
 func get_valid_tiles(tile):
 	var x = tile[0]
